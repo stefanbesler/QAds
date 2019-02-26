@@ -1,0 +1,3 @@
+[submodule "lib/ADS"]
+	path = lib/ADS
+	url = https://github.com/Beckhoff/ADS.git
