@@ -116,11 +116,13 @@ protected:
     htype mhandle_;
     htype mhandleMem_;
 
-    // because we can not use this in ads callbacks,
-    // we needs a different way to link a manager to some id,
-    // ads only allows integers as userdata, so we can't simply use the pointer
+    // We can not use "this" in an ADS callbacks on 64-Bit systems.
+    // hence, we need a different way to reference to managers in callbacks.
+    // ADS only allows integers as userdata, so we can't simply use the pointer
     // on a manager as userdata if we want this to work on 64 bit systems.
-    // Hence, we give each manager a unique (32bit id) such that we can identify it later
+    // We give each manager a unique (32bit id) such that we can identify it in a callback.
+    // Unfortunately, this make the constructor not threadsafe, should not be a big issue
+    // though, because managers should not be created too much dynamically in most use cases
     utype id_;
     static utype nid_;
     static QHash<utype, Tc3Manager*> uniqueInst_;
