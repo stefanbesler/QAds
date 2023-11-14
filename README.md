@@ -1,17 +1,19 @@
 # QAds
 Implements an object-orientated layer on top of Beckhoff ADS (TwinCAT2, TwinCAT3). The objects, implemented within the scope of this project, integrate nicely with Qt and Qml by using the Qt's signal/slot concept.
 
-# prerequisites
+# Prerequisites
 This repository is using https://github.com/Beckhoff/ADS as submodule. Hence, in order to make use of this package, you should be familiar with ADS (setting up routes, etc.)
 
-# usage
+# Usage
 We provide two objects to communicate with TwinCAT devices. 
 
 * Tc3Manager connects to the TwinCAT device by constructing the object with the netid and port (e.g. 192.168.0.1.1.1:851). If the device is available, Tc3Manager will connect to the device and register a state-change callback. Whenever the state of the Twincat devices changes, Tc3Manager throws a qt signal, which can be connected to. Additionally, Tc3Manager takes care of reconnecting to the TwinCAT devices, if the connection to the device is lost at some point.
 
 * Tc3Value represents a single instance on the TwinCAT device (e.g. MAIN.machineState). The object has methods to read and write values on the TwinCAT device. When constructing Tc3Value, we can optionally enable a valueChanged signal - Whenever the value of the variable on the TwinCAT devices changes, the valueChanged signal is send by the Tc3Value object. Tc3Value can read/write primitive datatypes (INT, DINT, REAL, LREAL, ...), but also reading/writing of DUTs (Structs, Enumerations, Unions) is implemented and demonstrated.
+  
+* Usually it is pretty tedious to write bindings from PLC structs to C++ structs by hand since one has to take care of alignment, use the correct datatypes and so on. Luckily [zkbindings](https://github.com/Zeugwerk/zkbindings-action) can we used to automatically generate bindings.
 
-# example (C++)
+# C++ example
 ```c++
 int main(int argc, char *argv[])
 {
@@ -45,7 +47,7 @@ int main(int argc, char *argv[])
 }
 ```
 
-# example (Qml)
+# QML example
 ```qml
 Window {
     title: sps.value("MAIN.somestring").value;
